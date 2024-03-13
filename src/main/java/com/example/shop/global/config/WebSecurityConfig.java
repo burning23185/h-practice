@@ -1,15 +1,14 @@
 package com.example.shop.global.config;
 
-
 import com.example.shop.global.jwt.JwtAuthenticationFilter;
 import com.example.shop.global.jwt.JwtAuthorizationFilter;
 import com.example.shop.global.jwt.JwtUtil;
+import com.example.shop.global.security.CustomAccessDeniedHandler;
 import com.example.shop.global.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -22,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @RequiredArgsConstructor
-@EnableWebSecurity // Spring Security 지원을 가능하게 함
+@EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig {
 
@@ -49,10 +48,8 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // CSRF 설정
-        http.csrf(AbstractHttpConfigurer::disable);
 
-        // 기본 설정인 Session 방식은 사용하지 않고 JWT 방식을 사용하기 위한 설정
+        http.csrf(AbstractHttpConfigurer::disable);
         http.sessionManagement((sessionManagement) ->
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
@@ -60,26 +57,17 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests(
                 (authorizeHttpRequests) ->
                         authorizeHttpRequests
-                                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
-                                .requestMatchers("/api/product").permitAll()
+                                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                                .requestMatchers("/api/product/**").permitAll()
                                 .requestMatchers("/api/user/**").permitAll()
-                                .anyRequest().authenticated()// 그 외 모든 요청 인증처리
+                                .anyRequest().authenticated()
         );
 
-        // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        // 접근 불가 페이지
-        http.exceptionHandling((exceptionHandling) ->
-                exceptionHandling
-                        .accessDeniedHandler((request, response, accessDeniedException) -> {
-                            response.setContentType("text/plain");
-                            response.setCharacterEncoding("UTF-8");
-                            response.setStatus(HttpStatus.FORBIDDEN.value());
-                            response.getWriter().write("권한이 없습니다");
-                        })
-        );
+        http.exceptionHandling((exceptionHandling) -> exceptionHandling.
+                accessDeniedHandler(new CustomAccessDeniedHandler()));
 
         return http.build();
     }

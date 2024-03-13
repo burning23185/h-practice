@@ -45,7 +45,8 @@ public class ProductServiceImpl implements ProductService {
 //
 //        return productRepository.getProductPage(PageRequest.of(page, size, sort)).map(ProductResponseDto::new);
 //    }
-    // 아래 쿼리보다 느림 100만건 기준 약 7분 30초  // 아래코드 약 1분 20초
+// 아래 쿼리보다 느림 100만건 기준 약 7분 30초  // 아래코드 약 1분 20초
+
     @Override
     public Page<ProductResponseDto.Get> getProductPage(int page, int size, String sortBy, boolean isAsc) {
         Sort sort = Sort.by(Sort.Direction.DESC, "createAt");

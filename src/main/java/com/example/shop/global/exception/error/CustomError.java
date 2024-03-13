@@ -1,4 +1,4 @@
-package com.example.shop.global.error;
+package com.example.shop.global.exception.error;
 
 import lombok.Builder;
 import lombok.Getter;

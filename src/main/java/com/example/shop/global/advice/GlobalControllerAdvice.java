@@ -1,7 +1,7 @@
 package com.example.shop.global.advice;
 
-import com.example.shop.global.error.CustomError;
-import com.example.shop.global.error.CustomErrorResponse;
+import com.example.shop.global.exception.error.CustomError;
+import com.example.shop.global.exception.error.CustomErrorResponse;
 import com.example.shop.global.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
@@ -231,4 +231,5 @@ public class GlobalControllerAdvice {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
+
 }

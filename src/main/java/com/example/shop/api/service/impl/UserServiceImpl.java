@@ -1,6 +1,5 @@
 package com.example.shop.api.service.impl;
 
-
 import com.example.shop.api.domain.User;
 import com.example.shop.api.domain.enums.UserRoleEnum;
 import com.example.shop.api.dto.UserRequestDto;
@@ -21,50 +20,46 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    // ADMIN_TOKEN
-    private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
-
     @Override
-    public boolean signup(UserRequestDto.Signup requestDto) {
+    public boolean login(UserRequestDto.Login requestDto, HttpServletResponse res) {
 
-        // 유저네임 중복 체크
-        if (userRepository.existsByUsername(requestDto.getEmail()))
-            throw new DuplicatedEmailException();
+        User user = findUserByUsername(requestDto.getEmail());
 
-        // 관리자 여부 체크
-        if (!requestDto.isAdmin()) {
-            userRepository.save(new User(requestDto,
-                    passwordEncoder.encode(requestDto.getPassword()),
-                    UserRoleEnum.USER));
-            return true;
-        }
+        if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword()))
+            throw new LoginFailException();
 
-        // 관리자 패스워드 체크
-        if (!ADMIN_TOKEN.equals(requestDto.getAdminToken())) {
-            throw new CreateAdminFailException();
-        }
-
-        // MANAGER 권한 체크
-        userRepository.save(new User(requestDto,
-                passwordEncoder.encode(requestDto.getPassword()),
-                UserRoleEnum.ADMIN));
+        jwtUtil.addJwtToCookie(jwtUtil.createToken(user.getUsername(), user.getRole()), res);
         return true;
     }
 
     @Override
-    public boolean login(UserRequestDto.Login requestDto, HttpServletResponse res) {
-        String username = requestDto.getEmail();
-        String password = requestDto.getPassword();
+    public boolean signup(UserRequestDto.Signup requestDto) {
 
-        // 사용자 확인
-        User user = userRepository.findByUsername(username).orElseThrow(EmailNotFoundException::new);
+        if (userRepository.existsByUsername(requestDto.getEmail()))
+            throw new DuplicatedEmailException();
 
-        // 비밀번호 확인
-        if (!passwordEncoder.matches(password, user.getPassword()))
-            throw new LoginFailException();
+        if (!requestDto.isAdmin()) return saveAsUer(requestDto);
 
-        // JWT 생성 및 쿠키에 저장 후 Response 객체에 추가
-        jwtUtil.addJwtToCookie(jwtUtil.createToken(user.getUsername(), user.getRole()), res);
+        return saveAsAdmin(requestDto);
+    }
+
+    private boolean saveAsUer(UserRequestDto.Signup requestDto){
+        userRepository.save(new User(requestDto,
+                passwordEncoder.encode(requestDto.getPassword()),
+                UserRoleEnum.USER));
+        return true;
+    }
+
+    private boolean saveAsAdmin(UserRequestDto.Signup requestDto){
+
+        String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
+
+        if (!ADMIN_TOKEN.equals(requestDto.getAdminToken()))
+            throw new CreateAdminFailException();
+
+        userRepository.save(new User(requestDto,
+                passwordEncoder.encode(requestDto.getPassword()),
+                UserRoleEnum.ADMIN));
         return true;
     }
 

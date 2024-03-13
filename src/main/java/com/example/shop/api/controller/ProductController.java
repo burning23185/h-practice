@@ -13,23 +13,23 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/product")
+@RequestMapping("api")
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
 
     @Secured(UserRoleEnum.Authority.ADMIN)
-    @PostMapping
+    @PostMapping("/admin/product")
     public ResponseEntity<ProductResponseDto.Get> createProduct(@Valid @RequestBody ProductRequestDto requestDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(requestDto));
     }
 
-    @GetMapping("/{productId}")
+    @GetMapping("/product/{productId}")
     public ResponseEntity<ProductResponseDto.Get> getProduct(@PathVariable Long productId){
         return ResponseEntity.ok(productService.getProduct(productId));
     }
 
-    @GetMapping
+    @GetMapping("/product")
     public ResponseEntity<Page<ProductResponseDto.Get>> getProductList(
             @RequestParam int page,
             @RequestParam int size,

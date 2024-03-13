@@ -17,10 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/login")
-    public ResponseEntity<Boolean> loginPage(@Valid @RequestBody UserRequestDto.Login requestDto) {
-        return new ResponseEntity<>(true, HttpStatus.OK);
-    }
     @PostMapping("/signup")
     public ResponseEntity<Boolean> signupPage(@Valid @RequestBody UserRequestDto.Signup requestDto) {
         if(userService.signup(requestDto))
