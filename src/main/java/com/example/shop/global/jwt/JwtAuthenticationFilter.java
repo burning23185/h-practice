@@ -1,6 +1,6 @@
 package com.example.shop.global.jwt;
 
-import com.example.shop.api.domain.UserRoleEnum;
+import com.example.shop.api.domain.enums.UserRoleEnum;
 import com.example.shop.api.dto.UserRequestDto;
 import com.example.shop.global.security.UserDetailsImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;

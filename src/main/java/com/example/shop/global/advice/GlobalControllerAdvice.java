@@ -96,7 +96,7 @@ public class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(value = UsernameNotFoundException.class)
-    public ResponseEntity usernameNotFoundException(UsernameNotFoundException e, HttpServletRequest httpServletRequest){
+    public ResponseEntity usernameNotFoundException(UsernameNotFoundException e, HttpServletRequest httpServletRequest) {
         List<CustomError> errorList = new ArrayList<>();
 
         errorList.add(CustomError.builder().field("GET USER").messege(e.getMessage()).build());
@@ -113,10 +113,10 @@ public class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(value = CreateAdminFailException.class)
-    public ResponseEntity createAdminFailException(CreateAdminFailException e, HttpServletRequest httpServletRequest){
+    public ResponseEntity createAdminFailException(CreateAdminFailException e, HttpServletRequest httpServletRequest) {
         List<CustomError> errorList = new ArrayList<>();
 
-        errorList.add( CustomError.builder().field("CREATE ADMIN").messege(e.getMessage()).build());
+        errorList.add(CustomError.builder().field("CREATE ADMIN").messege(e.getMessage()).build());
 
         CustomErrorResponse errorResponse = CustomErrorResponse.builder()
                 .errorList(errorList)
@@ -130,10 +130,10 @@ public class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(value = DuplicatedEmailException.class)
-    public ResponseEntity duplicatedEmailException(DuplicatedEmailException e, HttpServletRequest httpServletRequest){
+    public ResponseEntity duplicatedEmailException(DuplicatedEmailException e, HttpServletRequest httpServletRequest) {
         List<CustomError> errorList = new ArrayList<>();
 
-        errorList.add( CustomError.builder().field("CREATE ADMIN").messege(e.getMessage()).build());
+        errorList.add(CustomError.builder().field("CREATE ADMIN").messege(e.getMessage()).build());
 
         CustomErrorResponse errorResponse = CustomErrorResponse.builder()
                 .errorList(errorList)
@@ -145,11 +145,12 @@ public class GlobalControllerAdvice {
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
     }
+
     @ExceptionHandler(value = LoginFailException.class)
-    public ResponseEntity loginFailException(LoginFailException e, HttpServletRequest httpServletRequest){
+    public ResponseEntity loginFailException(LoginFailException e, HttpServletRequest httpServletRequest) {
         List<CustomError> errorList = new ArrayList<>();
 
-        errorList.add( CustomError.builder().field("LOGIN FAIL").messege(e.getMessage()).build());
+        errorList.add(CustomError.builder().field("LOGIN FAIL").messege(e.getMessage()).build());
 
         CustomErrorResponse errorResponse = CustomErrorResponse.builder()
                 .errorList(errorList)
@@ -164,10 +165,10 @@ public class GlobalControllerAdvice {
 
 
     @ExceptionHandler(value = EmailNotFoundException.class)
-    public ResponseEntity emailNotFoundException(EmailNotFoundException e, HttpServletRequest httpServletRequest){
+    public ResponseEntity emailNotFoundException(EmailNotFoundException e, HttpServletRequest httpServletRequest) {
         List<CustomError> errorList = new ArrayList<>();
 
-        errorList.add( CustomError.builder().field("GET EMAIL").messege(e.getMessage()).build());
+        errorList.add(CustomError.builder().field("GET EMAIL").messege(e.getMessage()).build());
 
         CustomErrorResponse errorResponse = CustomErrorResponse.builder()
                 .errorList(errorList)
@@ -180,4 +181,54 @@ public class GlobalControllerAdvice {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
+    @ExceptionHandler(value = GenderNotAcceptableException.class)
+    public ResponseEntity genderNotAcceptableException(GenderNotAcceptableException e, HttpServletRequest httpServletRequest) {
+        List<CustomError> errorList = new ArrayList<>();
+
+        errorList.add(CustomError.builder().field("SIGN UP").messege(e.getMessage()).build());
+
+        CustomErrorResponse errorResponse = CustomErrorResponse.builder()
+                .errorList(errorList)
+                .message("")
+                .requestUrl(httpServletRequest.getRequestURI())
+                .statusCode(HttpStatus.CONFLICT.toString())
+                .resultCode("FAIL")
+                .build();
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
+
+    @ExceptionHandler(value = ProductNotFoundException.class)
+    public ResponseEntity productNotFoundException(ProductNotFoundException e, HttpServletRequest httpServletRequest) {
+        List<CustomError> errorList = new ArrayList<>();
+
+        errorList.add(CustomError.builder().field("GET PRODUCT").messege(e.getMessage()).build());
+
+        CustomErrorResponse errorResponse = CustomErrorResponse.builder()
+                .errorList(errorList)
+                .message("")
+                .requestUrl(httpServletRequest.getRequestURI())
+                .statusCode(HttpStatus.NOT_FOUND.toString())
+                .resultCode("FAIL")
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    @ExceptionHandler(value = CategoryNotFoundException.class)
+    public ResponseEntity categoryNotFoundException(CategoryNotFoundException e, HttpServletRequest httpServletRequest) {
+        List<CustomError> errorList = new ArrayList<>();
+
+        errorList.add(CustomError.builder().field("GET CATEGORY").messege(e.getMessage()).build());
+
+        CustomErrorResponse errorResponse = CustomErrorResponse.builder()
+                .errorList(errorList)
+                .message("")
+                .requestUrl(httpServletRequest.getRequestURI())
+                .statusCode(HttpStatus.NOT_FOUND.toString())
+                .resultCode("FAIL")
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
 }

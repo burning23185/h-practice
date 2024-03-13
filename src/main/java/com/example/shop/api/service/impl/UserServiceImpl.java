@@ -2,7 +2,7 @@ package com.example.shop.api.service.impl;
 
 
 import com.example.shop.api.domain.User;
-import com.example.shop.api.domain.UserRoleEnum;
+import com.example.shop.api.domain.enums.UserRoleEnum;
 import com.example.shop.api.dto.UserRequestDto;
 import com.example.shop.api.repository.UserRepository;
 import com.example.shop.api.service.UserService;

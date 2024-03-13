@@ -1,6 +1,6 @@
 package com.example.shop.api.dto;
 
-import com.example.shop.api.domain.GenderEnum;
+import com.example.shop.api.domain.enums.GenderEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

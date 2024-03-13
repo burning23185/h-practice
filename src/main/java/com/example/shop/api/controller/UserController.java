@@ -1,6 +1,5 @@
 package com.example.shop.api.controller;
 
-
 import com.example.shop.api.dto.UserRequestDto;
 import com.example.shop.api.service.UserService;
 import jakarta.validation.Valid;

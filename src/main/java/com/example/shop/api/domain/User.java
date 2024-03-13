@@ -1,5 +1,7 @@
 package com.example.shop.api.domain;
 
+import com.example.shop.api.domain.enums.GenderEnum;
+import com.example.shop.api.domain.enums.UserRoleEnum;
 import com.example.shop.api.dto.UserRequestDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;

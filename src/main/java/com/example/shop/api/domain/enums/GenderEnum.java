@@ -1,8 +1,7 @@
-package com.example.shop.api.domain;
+package com.example.shop.api.domain.enums;
 
 import com.example.shop.global.exception.GenderNotAcceptableException;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter

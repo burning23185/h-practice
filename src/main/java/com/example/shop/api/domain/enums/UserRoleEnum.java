@@ -1,4 +1,4 @@
-package com.example.shop.api.domain;
+package com.example.shop.api.domain.enums;
 import lombok.Getter;
 
 @Getter

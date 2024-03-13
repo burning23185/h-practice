@@ -3,7 +3,7 @@ package com.example.shop.global.security;
 
 
 import com.example.shop.api.domain.User;
-import com.example.shop.api.domain.UserRoleEnum;
+import com.example.shop.api.domain.enums.UserRoleEnum;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

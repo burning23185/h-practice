@@ -1,6 +1,6 @@
 package com.example.shop.global.jwt;
 
-import com.example.shop.api.domain.UserRoleEnum;
+import com.example.shop.api.domain.enums.UserRoleEnum;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -50,8 +50,7 @@ public class JwtUtil {
         Date date = new Date();
 
         // 토큰 만료시간
-        // 60분
-        long TOKEN_TIME = 60 * 60 * 1000L;
+        long TOKEN_TIME = 24 * 60 * 60 * 1000L;
 
         return BEARER_PREFIX + Jwts.builder()
                 .setSubject(username) // 사용자 식별자값(ID)
