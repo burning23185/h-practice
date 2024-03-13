@@ -22,7 +22,8 @@
    <br>
    <br>
 
-![API 명세서5](https://github.com/burning23185/h-practice/assets/58378530/8ca7b95e-d53a-4ed6-afa4-a7a84c712f8c)
+![API 명세서5](https://github.com/burning23185/h-practice/assets/58378530/91ba7e44-2114-404b-8491-770290e44b92)
+
 
 
 
