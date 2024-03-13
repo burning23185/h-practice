@@ -1,5 +1,6 @@
 package com.example.shop.api.service.impl;
 
+import com.example.shop.api.domain.Category;
 import com.example.shop.api.domain.Product;
 import com.example.shop.api.dto.ProductRequestDto;
 import com.example.shop.api.repository.ProductRepository;
@@ -30,7 +31,7 @@ class ProductServiceImplTest {
     void createData(){
         int value = 100000000;
         for (int i = 0 ; i < 10000; i++){
-            productRepository.save(new Product(new ProductRequestDto(Integer.toString(value - i),value - i,100,"NONE",1L)));
+            productRepository.save(new Product(new ProductRequestDto(Integer.toString(value - i),value - i,100,"NONE",1L),new Category("기타",null)));
         }
     }
     @Order(1)
