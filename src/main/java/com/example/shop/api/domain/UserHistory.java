@@ -19,7 +19,7 @@ public class UserHistory {
 
     private Long user_id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String username;
 
     @Column(nullable = false)

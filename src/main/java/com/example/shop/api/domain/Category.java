@@ -37,10 +37,9 @@ public class Category {
         this.categoryName = categoryName;
         this.parent = parent;
     }
-    public Category updateCategory(String categoryName, Category parent){
+    public void updateCategory(String categoryName, Category parent){
         this.categoryName = categoryName;
         this.parent = parent;
-        return this;
     }
 }
 

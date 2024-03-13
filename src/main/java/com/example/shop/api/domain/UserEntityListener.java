@@ -10,6 +10,7 @@ public class UserEntityListener {
     public void preDelete(User user){
         UserHistoryRepository userHistoryRepository
                 = BeanUtils.getBean(UserHistoryRepository.class);
+
         UserHistory userHistory = new UserHistory(user);
         userHistoryRepository.save(userHistory);
     }

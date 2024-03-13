@@ -14,15 +14,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
-    @Override
-    public Category findById(Long categoryId){
-        System.out.println("categoryId = " + categoryId);
-        return categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
-    }
+
     @Transactional
     @Override
     public CategoryResponseDto createCategory(CategoryRequestDto requestDto) {
-        Category category= new Category(requestDto.getCategoryName(),
+        Category category = new Category(requestDto.getCategoryName(),
                 findById(requestDto.getParentId()));
         categoryRepository.save(category);
         return new CategoryResponseDto(category);
@@ -31,9 +27,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryResponseDto updateCategory(CategoryRequestDto requestDto) {
-        Category category = findById(requestDto.getCategoryId())
-                .updateCategory(requestDto.getCategoryName(),
-                        findById(requestDto.getParentId()));
+        Category category = findById(requestDto.getCategoryId());
+        category.updateCategory(requestDto.getCategoryName(), findById(requestDto.getParentId()));
 
         return new CategoryResponseDto(category);
     }
@@ -44,7 +39,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public void deleteCategory(Long categoryId) {
         categoryRepository.delete(findById(categoryId));
+    }
+
+    @Override
+    public Category findById(Long categoryId){
+        return categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
     }
 }

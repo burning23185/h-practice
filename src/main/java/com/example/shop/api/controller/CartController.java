@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CartController {
     private final CartService cartService;
-    @PostMapping
-    public ResponseEntity<CartResponseDto> addCart(@RequestParam Long productId, @RequestParam int quantity, HttpServletRequest request, HttpServletResponse response){
+    @PostMapping("/product/{productId}/quantity/{quantity}")
+    public ResponseEntity<CartResponseDto> addCart(@PathVariable Long productId, @PathVariable int quantity, HttpServletRequest request, HttpServletResponse response){
         return ResponseEntity.ok(cartService.addProductToCart(productId,quantity,request,response));
     }
 
@@ -22,8 +22,8 @@ public class CartController {
     public ResponseEntity<CartResponseDto> getCart(HttpServletRequest request){
         return ResponseEntity.ok(cartService.getCart(request));
     }
-    @PutMapping
-    public ResponseEntity<CartResponseDto> updateCart(@RequestParam Long productId, @RequestParam int quantity, HttpServletRequest request, HttpServletResponse response){
+    @PutMapping("/product/{productId}/quantity/{quantity}")
+    public ResponseEntity<CartResponseDto> updateCart(@PathVariable Long productId, @PathVariable int quantity, HttpServletRequest request, HttpServletResponse response){
         return ResponseEntity.ok(cartService.updateCartItem(request, response, productId, quantity));
     }
     @DeleteMapping
