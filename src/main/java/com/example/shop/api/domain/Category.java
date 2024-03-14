@@ -5,8 +5,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,22 +22,29 @@ public class Category {
     @Column(length = 30, nullable = false)
     private String categoryName;
 
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Category parent;
+    @Column(nullable = true)
+    private String parentPath;
 
     @OneToMany(mappedBy = "category")
     @ToString.Exclude
     private List<Product> products = new ArrayList<>();
 
-    public Category(String categoryName, Category parent) {
+    public Category(String categoryName, String parentPath) {
         this.categoryName = categoryName;
-        this.parent = parent;
+        this.parentPath = parentPath;
     }
-    public void updateCategory(String categoryName, Category parent){
+
+    public void updateCategory(String categoryName, String parentPath){
         this.categoryName = categoryName;
-        this.parent = parent;
+        this.parentPath = parentPath;
+    }
+
+    public String getCategoryPathName(){
+
+        if (this.parentPath == null) return getCategoryName();
+        StringBuilder sb = new StringBuilder();
+        sb.append(getParentPath()).append(" < ").append(getCategoryName());
+        return sb.toString();
     }
 }
 

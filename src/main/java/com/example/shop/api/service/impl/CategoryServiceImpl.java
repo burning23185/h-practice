@@ -18,8 +18,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     @Override
     public CategoryResponseDto createCategory(CategoryRequestDto requestDto) {
+        System.out.println(requestDto.getParentId());
+        System.out.println(findById(requestDto.getParentId()).getParentPath());
+        System.out.println(findById(requestDto.getParentId()).getCategoryPathName());
         Category category = new Category(requestDto.getCategoryName(),
-                findById(requestDto.getParentId()));
+                findById(requestDto.getParentId()).getCategoryPathName());
         categoryRepository.save(category);
         return new CategoryResponseDto(category);
     }
@@ -28,7 +31,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     public CategoryResponseDto updateCategory(CategoryRequestDto requestDto) {
         Category category = findById(requestDto.getCategoryId());
-        category.updateCategory(requestDto.getCategoryName(), findById(requestDto.getParentId()));
+        category.updateCategory(requestDto.getCategoryName(),
+                findById(requestDto.getParentId()).getCategoryPathName());
 
         return new CategoryResponseDto(category);
     }

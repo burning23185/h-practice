@@ -3,8 +3,10 @@ package com.example.shop.api.service.impl;
 import com.example.shop.api.domain.Category;
 import com.example.shop.api.domain.Product;
 import com.example.shop.api.dto.ProductRequestDto;
+import com.example.shop.api.repository.CategoryRepository;
 import com.example.shop.api.repository.ProductRepository;
 import com.example.shop.global.config.QueryDslConfig;
+import com.example.shop.global.exception.CategoryNotFoundException;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +29,18 @@ import org.springframework.util.StopWatch;
 class ProductServiceImplTest {
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
     @BeforeAll
     void createData(){
         int value = 100000000;
-        for (int i = 0 ; i < 10000; i++){
-            productRepository.save(new Product(new ProductRequestDto(Integer.toString(value - i),value - i,100,"NONE",1L),new Category("기타",null)));
+        categoryRepository.save(new Category("All",null));
+        for(long i = 1 ; i < 5 ; i++){
+            categoryRepository.save(new Category(Long.toString(i), categoryRepository.findById(i).orElseThrow(CategoryNotFoundException::new).getCategoryPathName()));
+        }
+        for (int i = 0 ; i < 400000; i++){
+            productRepository.save(new Product(
+                    new ProductRequestDto(Integer.toString(value - i),value - i,100,"NONE",4L), categoryRepository.findById(4L).orElseThrow(CategoryNotFoundException::new)));
         }
     }
     @Order(1)
@@ -42,7 +51,19 @@ class ProductServiceImplTest {
 
         productRepository.getProductPage(PageRequest.of(0, 30,
                 Sort.by(Sort.Direction.ASC, "price")));
+        productRepository.getProductPage(PageRequest.of(2, 30,
+                Sort.by(Sort.Direction.ASC, "price")));
+        productRepository.getProductPage(PageRequest.of(7, 30,
+                Sort.by(Sort.Direction.ASC, "price")));
+        productRepository.getProductPage(PageRequest.of(10, 30,
+                Sort.by(Sort.Direction.ASC, "price")));
 
+        productRepository.getProductPage(PageRequest.of(0, 30,
+                Sort.by(Sort.Direction.DESC, "price")));
+        productRepository.getProductPage(PageRequest.of(0, 30,
+                Sort.by(Sort.Direction.ASC, "productName")));
+        productRepository.getProductPage(PageRequest.of(0, 30,
+                Sort.by(Sort.Direction.DESC, "productName")));
         stopWatch.stop();
         System.out.println("###################################");
         System.out.println(stopWatch.prettyPrint());
@@ -56,6 +77,20 @@ class ProductServiceImplTest {
         stopWatch.start();
         productRepository.findAll(PageRequest.of(0, 30,
                 Sort.by(Sort.Direction.ASC, "price")));
+
+        productRepository.getProductPage(PageRequest.of(2, 30,
+                Sort.by(Sort.Direction.ASC, "price")));
+        productRepository.getProductPage(PageRequest.of(7, 30,
+                Sort.by(Sort.Direction.ASC, "price")));
+        productRepository.getProductPage(PageRequest.of(10, 30,
+                Sort.by(Sort.Direction.ASC, "price")));
+
+        productRepository.getProductPage(PageRequest.of(0, 30,
+                Sort.by(Sort.Direction.DESC, "price")));
+        productRepository.getProductPage(PageRequest.of(0, 30,
+                Sort.by(Sort.Direction.ASC, "productName")));
+        productRepository.getProductPage(PageRequest.of(0, 30,
+                Sort.by(Sort.Direction.DESC, "productName")));
 
         stopWatch.stop();
         System.out.println("###################################");

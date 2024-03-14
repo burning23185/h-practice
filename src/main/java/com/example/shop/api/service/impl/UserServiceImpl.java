@@ -38,9 +38,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByUsername(requestDto.getEmail()))
             throw new DuplicatedEmailException();
 
-        if (!requestDto.isAdmin()) return saveAsUer(requestDto);
-
-        return saveAsAdmin(requestDto);
+        return requestDto.isAdmin() ? saveAsAdmin(requestDto) : saveAsUer(requestDto);
     }
 
     private boolean saveAsUer(UserRequestDto.Signup requestDto){
