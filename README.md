@@ -14,7 +14,7 @@
    <br>
 
 
-![ERD5](https://github.com/burning23185/h-practice/assets/58378530/eaab4df3-eaa1-4097-be73-52e4544f3c99)
+![ERD5](https://github.com/burning23185/h-practice/assets/58378530/d2f69916-666f-4f5d-b60c-c936003eef0d)
 
 
    <br>
